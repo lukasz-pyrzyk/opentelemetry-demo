@@ -16,7 +16,7 @@ public class Program
         })
         .ConfigureServices((ctx, services) =>
         {
-            services.AddOpenTelemetry();
+            services.AddOpenTelemetry("Worker");
 
             services.AddTableStorage(ctx.Configuration);
             services.AddServiceBusClients(ctx.Configuration);

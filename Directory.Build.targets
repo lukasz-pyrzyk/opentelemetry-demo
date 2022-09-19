@@ -9,7 +9,12 @@
     <PackageReference Update="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.9" />
     <PackageReference Update="Microsoft.Extensions.Hosting" Version="6.0.1" />
     <PackageReference Update="Microsoft.NET.Test.Sdk" Version="17.3.1" />
-    <PackageReference Update="OpenTelemetry.Exporter.Zipkin" Version="1.4.0-beta.3.8 " />
+    <PackageReference Update="OpenTelemetry" Version="1.4.0-alpha.2" />
+    <PackageReference Update="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.4.0-alpha.2" />
+    <PackageReference Update="OpenTelemetry.Exporter.Zipkin" Version="1.4.0-alpha.2" />
+    <PackageReference Update="OpenTelemetry.Extensions.Hosting" Version="1.0.0-rc9.6" />
+    <PackageReference Update="OpenTelemetry.Instrumentation.AspNetCore" Version="1.0.0-rc9.6" />
+    <PackageReference Update="OpenTelemetry.Instrumentation.Http" Version="1.0.0-rc9.6" />
     <PackageReference Update="Serilog.Extensions.Hosting" Version="5.0.1" />
     <PackageReference Update="Serilog.Sinks.Console" Version="4.1.0" />
     <PackageReference Update="xunit" Version="2.4.2" />

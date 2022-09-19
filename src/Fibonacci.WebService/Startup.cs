@@ -21,7 +21,7 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddOpenTelemetry();
+        services.AddOpenTelemetry("WebService");
         
         services.AddTableStorage(Configuration);
         services.AddServiceBusClients(Configuration);

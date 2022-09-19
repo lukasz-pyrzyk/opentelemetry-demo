@@ -1,17 +1,30 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using Azure.Messaging.ServiceBus;
 using Fibonacci.Shared.ServiceBus;
 using Fibonacci.Shared.TableStorage;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 
 namespace Fibonacci.Shared;
 
 public static class ServiceCollectionExtensions
 {
-    public static void AddOpenTelemetry(this IServiceCollection services)
+    public static void AddOpenTelemetry(this IServiceCollection services, string serviceName)
     {
         Activity.DefaultIdFormat = ActivityIdFormat.W3C;
+
+
+        services.AddOpenTelemetryTracing(builder => builder
+            .AddAspNetCoreInstrumentation()
+            .AddHttpClientInstrumentation()
+            .SetResourceBuilder(ResourceBuilder.CreateDefault()
+                .AddService(serviceName, "Fibonacci")
+                .AddTelemetrySdk())
+            .AddZipkinExporter(x => x.Endpoint = new Uri("http://localhost:9411/api/v2/spans")));
+
     }
 
     public static void AddServiceBusClients(this IServiceCollection services, IConfiguration configuration)
