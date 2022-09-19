@@ -1,6 +1,6 @@
-﻿namespace Fibonacci.Shared.Cfg;
+﻿namespace Fibonacci.Shared.ServiceBus;
 
-public class QueueCfg
+public class FibonacciQueueCfg
 {
     public string ConnectionString { get; set; }
     public string EntityPath { get; set; }

@@ -1,5 +1,5 @@
 using Fibonacci.Shared;
-using Fibonacci.Shared.Cfg;
+using Fibonacci.Shared.TableStorage;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -21,15 +21,9 @@ public class Startup
         services.AddOpenTelemetry();
 
         services.AddHttpClient();
-
-        var tableCfg = new TableStorageCfg();
-        Configuration.GetSection("TableStorage").Bind(tableCfg);
-        services.AddSingleton(tableCfg);
-        services.AddSingleton<Repository>();
-
-        var queueCfg = new QueueCfg();
-        Configuration.GetSection("Queue").Bind(queueCfg);
-        services.AddSingleton(queueCfg);
+        
+        services.AddTableStorage(Configuration);
+        services.AddServiceBusClients(Configuration);
         services.AddHostedService<MessageHandler>();
     }
 

@@ -1,15 +1,14 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using Fibonacci.Shared.Cfg;
 using Microsoft.Azure.Cosmos.Table;
 
-namespace Fibonacci.Shared;
+namespace Fibonacci.Shared.TableStorage;
 
-public class Repository
+public class FibonacciTableStorage
 {
     private readonly CloudTable _table;
 
-    public Repository(TableStorageCfg cfg)
+    public FibonacciTableStorage(FibonacciTableStorageCfg cfg)
     {
         var storageAccount = CloudStorageAccount.Parse(cfg.ConnectionString);
         var tableClient = storageAccount.CreateCloudTableClient(new TableClientConfiguration
@@ -26,9 +25,9 @@ public class Repository
         _table.CreateIfNotExists();
     }
 
-    public async Task Upsert(FibonacciResultEntity entity, CancellationToken ct)
+    public Task<TableResult> Upsert(FibonacciResultEntity entity, CancellationToken ct)
     {
-        _ = await _table.ExecuteAsync(TableOperation.InsertOrMerge(entity), ct);
+        return _table.ExecuteAsync(TableOperation.InsertOrMerge(entity), ct);
     }
 
     public async Task Delete(int n, CancellationToken ct)
@@ -38,7 +37,7 @@ public class Repository
         {
             await _table.ExecuteAsync(operation, ct);
         }
-        catch (StorageException)
+        catch (StorageException e) when (e.Message == "Not Found")
         {
         }
     }

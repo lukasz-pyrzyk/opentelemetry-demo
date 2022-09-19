@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Fibonacci.Shared;
-using Fibonacci.Shared.Cfg;
-using Microsoft.Azure.ServiceBus;
+using Azure.Messaging.ServiceBus;
+using Fibonacci.Shared.ServiceBus;
+using Fibonacci.Shared.TableStorage;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -13,37 +12,31 @@ namespace Fibonacci.Worker;
 
 class MessageHandler : BackgroundService
 {
-    private readonly Repository _repository;
+    private readonly FibonacciTableStorage _repository;
     private readonly IHttpClientFactory _factory;
-    private readonly QueueClient _queueClient;
+    private readonly ServiceBusReceiver _processor;
     private readonly ILogger<MessageHandler> _logger;
 
-    public MessageHandler(QueueCfg cfg, Repository repository, IHttpClientFactory factory, ILogger<MessageHandler> logger)
+    public MessageHandler(ServiceBusClient client, FibonacciQueueCfg cfg, FibonacciTableStorage repository, IHttpClientFactory factory, ILogger<MessageHandler> logger)
     {
         _logger = logger;
         _repository = repository;
         _factory = factory;
-        _queueClient = new QueueClient(cfg.ConnectionString, cfg.EntityPath);
+        _processor = client.CreateReceiver(cfg.EntityPath);
     }
 
-    protected override Task ExecuteAsync(CancellationToken stoppingToken)
+    protected override async Task ExecuteAsync(CancellationToken ct)
     {
-        var options = new MessageHandlerOptions(ExceptionHandler)
+        while (!ct.IsCancellationRequested)
         {
-            MaxConcurrentCalls = 1,
-            AutoComplete = true,
-        };
-
-        _queueClient.RegisterMessageHandler(Handle, options);
-
-        return Task.CompletedTask;
+            var msg = await _processor.ReceiveMessageAsync(cancellationToken: ct);
+            await Handle(msg, ct);
+        }
     }
 
-    private async Task Handle(Message msg, CancellationToken ct)
+    private async Task Handle(ServiceBusReceivedMessage msg, CancellationToken ct)
     {
-        using var _ = _logger.BeginScope("{TraceId}, {ParentId}, {SpanId}", Activity.Current.TraceId, Activity.Current.ParentSpanId, Activity.Current.SpanId);
-
-        var n = BitConverter.ToInt32(msg.Body);
+        var n = Convert.ToInt32(msg.Body.ToString());
         var fib = Fibonacci(n);
         _logger.LogInformation("Calculated fib value {fib} for n {n}.", fib, n);
 
@@ -52,7 +45,6 @@ class MessageHandler : BackgroundService
 
         // dummy call to check if activity data is added to outgoing requests
         await CallExternalService();
-
     }
 
     private async Task CallExternalService()
@@ -60,13 +52,7 @@ class MessageHandler : BackgroundService
         var client = _factory.CreateClient();
         using var _ = await client.GetAsync("https://google.com");
     }
-
-    private Task ExceptionHandler(ExceptionReceivedEventArgs arg)
-    {
-        _logger.LogError(arg.Exception, "Received new error message");
-        return Task.CompletedTask;
-    }
-
+    
     private static int Fibonacci(int n)
     {
         int a = 0; int b = 1;
@@ -79,9 +65,8 @@ class MessageHandler : BackgroundService
         return a;
     }
 
-    public override void Dispose()
+    public override async Task StopAsync(CancellationToken cancellationToken)
     {
-        _queueClient.CloseAsync().GetAwaiter().GetResult();
-        base.Dispose();
+        await _processor.DisposeAsync();
     }
 }

@@ -1,8 +1,6 @@
 using Fibonacci.Shared;
-using Fibonacci.Shared.Cfg;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Azure.ServiceBus;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,16 +21,9 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddOpenTelemetry();
-
-        var tableCfg = new TableStorageCfg();
-        Configuration.GetSection("TableStorage").Bind(tableCfg);
-        services.AddSingleton(tableCfg);
-        services.AddSingleton<Repository>();
-
-        var cfg = new QueueCfg();
-        Configuration.GetSection("Queue").Bind(cfg);
-        services.AddSingleton(cfg);
-        services.AddSingleton(new QueueClient(cfg.ConnectionString, cfg.EntityPath));
+        
+        services.AddTableStorage(Configuration);
+        services.AddServiceBusClients(Configuration);
 
         services.AddDbContextPool<HistoryDbContext>(builder =>
         {

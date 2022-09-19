@@ -1,6 +1,6 @@
 ﻿using Microsoft.Azure.Cosmos.Table;
 
-namespace Fibonacci.Shared;
+namespace Fibonacci.Shared.TableStorage;
 
 public class FibonacciResultEntity : TableEntity
 {
