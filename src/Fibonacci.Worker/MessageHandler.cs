@@ -49,17 +49,7 @@ class MessageHandler : BackgroundService
 
         await _repository.Upsert(new FibonacciResultEntity(n, fib), ct);
         _logger.LogInformation("Saved result for n {n}", n);
-
-        // dummy call to check if activity data is added to outgoing requests
-        await CallExternalService();
     }
-
-    private async Task CallExternalService()
-    {
-        var client = _factory.CreateClient();
-        using var _ = await client.GetAsync("https://google.com");
-    }
-
     private static int Fibonacci(int n)
     {
         int a = 0; int b = 1;
