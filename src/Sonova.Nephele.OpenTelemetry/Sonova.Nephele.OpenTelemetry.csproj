@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="OpenTelemetry.Hosting" />
+    <PackageReference Include="OpenTelemetry.Collector.AspNetCore" />
+    <PackageReference Include="OpenTelemetry.Collector.Dependencies" />
+    <PackageReference Include="OpenTelemetry.Exporter.Zipkin" />
+    <PackageReference Include="OpenTelemetry.Exporter.ApplicationInsights" />
+    <PackageReference Include="Microsoft.Azure.ServiceBus" />
+  </ItemGroup>
+</Project>

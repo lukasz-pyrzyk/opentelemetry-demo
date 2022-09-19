@@ -1,0 +1,64 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29806.167
+MinimumVisualStudioVersion = 15.0.26124.0
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2E336DC8-5712-414B-B570-584A6BF8268E}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		Directory.Build.props = Directory.Build.props
+		Directory.Build.targets = Directory.Build.targets
+		NuGet.config = NuGet.config
+		readme.md = readme.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fibonacci.WebService", "src\Fibonacci.WebService\Fibonacci.WebService.csproj", "{BB0961D4-0ADF-4277-8A44-C5C1556B489A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fibonacci.Worker", "src\Fibonacci.Worker\Fibonacci.Worker.csproj", "{6CE12AA0-E65B-4D4B-9D26-2B983C2A04A3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fibonacci.Tests", "src\Fibonacci.Tests\Fibonacci.Tests.csproj", "{658CAFE6-0DFB-4920-94A8-44B81BA606CF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fibonacci.WebServiceClient", "src\Fibonacci.WebServiceClient\Fibonacci.WebServiceClient.csproj", "{F936124B-DA20-4BB3-A952-D3F436CC0159}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fibonacci.Shared", "src\Fibonacci.Shared\Fibonacci.Shared.csproj", "{67C22574-C928-46EC-910B-F785C9D10C38}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sonova.Nephele.OpenTelemetry", "src\Sonova.Nephele.OpenTelemetry\Sonova.Nephele.OpenTelemetry.csproj", "{A2364037-F87A-43F6-8FB1-42948FBE7259}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BB0961D4-0ADF-4277-8A44-C5C1556B489A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB0961D4-0ADF-4277-8A44-C5C1556B489A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB0961D4-0ADF-4277-8A44-C5C1556B489A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB0961D4-0ADF-4277-8A44-C5C1556B489A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CE12AA0-E65B-4D4B-9D26-2B983C2A04A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CE12AA0-E65B-4D4B-9D26-2B983C2A04A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CE12AA0-E65B-4D4B-9D26-2B983C2A04A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CE12AA0-E65B-4D4B-9D26-2B983C2A04A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{658CAFE6-0DFB-4920-94A8-44B81BA606CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{658CAFE6-0DFB-4920-94A8-44B81BA606CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{658CAFE6-0DFB-4920-94A8-44B81BA606CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{658CAFE6-0DFB-4920-94A8-44B81BA606CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F936124B-DA20-4BB3-A952-D3F436CC0159}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F936124B-DA20-4BB3-A952-D3F436CC0159}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F936124B-DA20-4BB3-A952-D3F436CC0159}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F936124B-DA20-4BB3-A952-D3F436CC0159}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67C22574-C928-46EC-910B-F785C9D10C38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67C22574-C928-46EC-910B-F785C9D10C38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67C22574-C928-46EC-910B-F785C9D10C38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67C22574-C928-46EC-910B-F785C9D10C38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2364037-F87A-43F6-8FB1-42948FBE7259}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2364037-F87A-43F6-8FB1-42948FBE7259}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2364037-F87A-43F6-8FB1-42948FBE7259}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2364037-F87A-43F6-8FB1-42948FBE7259}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {71E59F65-0A2A-4D4E-BB0A-F97C132A9455}
+	EndGlobalSection
+EndGlobal
