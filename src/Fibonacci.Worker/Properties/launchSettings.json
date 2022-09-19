@@ -2,10 +2,8 @@
   "profiles": {
     "Fibonacci.Worker": {
       "commandName": "Project",
-      "launchBrowser": true,
-      "applicationUrl": "https://localhost:5001",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Local"
+        "DOTNET_ENVIRONMENT": "Local"
       }
     }
   }
