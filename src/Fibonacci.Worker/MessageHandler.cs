@@ -26,10 +26,10 @@ class MessageHandler : BackgroundService
         while (!ct.IsCancellationRequested)
         {
             var msg = await _processor.ReceiveMessageAsync(cancellationToken: ct);
-            if (msg is not null)
-            {
-                await Handle(msg, ct);
-            }
+            if (msg is null) continue;
+
+            await Handle(msg, ct);
+            await _processor.CompleteMessageAsync(msg, ct);
         }
     }
 
