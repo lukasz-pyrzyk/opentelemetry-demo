@@ -5,7 +5,6 @@ using Fibonacci.Shared;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Extensions.Logging;
-using Sonova.Nephele.OpenTelemetry;
 
 namespace Fibonacci.WebService.Controllers
 {
@@ -35,7 +34,6 @@ namespace Fibonacci.WebService.Controllers
             _logger.LogInformation("Creating a calculation request for n {n}", n);
             
             var msg = new Message { Body = BitConverter.GetBytes(n.Value) };
-            msg.EnrichWithTelemetry();
 
             _logger.LogInformation("Sending calculation request for n {n}", n);
             await queueClient.SendAsync(msg);

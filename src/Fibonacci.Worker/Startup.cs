@@ -19,7 +19,7 @@ namespace Fibonacci.Worker
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDistributedTelemetry();
+            services.AddOpenTelemetry();
 
             services.AddHttpClient();
 

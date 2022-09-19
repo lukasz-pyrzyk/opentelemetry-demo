@@ -23,7 +23,7 @@ namespace Fibonacci.WebService
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDistributedTelemetry();
+            services.AddOpenTelemetry();
 
             var tableCfg = new TableStorageCfg();
             Configuration.GetSection("TableStorage").Bind(tableCfg);
