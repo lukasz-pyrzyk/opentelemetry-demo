@@ -1,56 +1,32 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Azure.Cosmos.Table;
+using Azure.Data.Tables;
 
 namespace Fibonacci.Shared.TableStorage;
 
 public class FibonacciTableStorage
 {
-    private readonly CloudTable _table;
+    private readonly TableClient _table;
 
     public FibonacciTableStorage(FibonacciTableStorageCfg cfg)
     {
-        var storageAccount = CloudStorageAccount.Parse(cfg.ConnectionString);
-        var tableClient = storageAccount.CreateCloudTableClient(new TableClientConfiguration
-        {
-            CosmosExecutorConfiguration = new CosmosExecutorConfiguration
-            {
-                UseConnectionModeDirect = false
-            },
-            RestExecutorConfiguration = new RestExecutorConfiguration(),
-            UseRestExecutorForCosmosEndpoint = true,
-        });
-
-        _table = tableClient.GetTableReference(cfg.TableName);
+        _table = new TableClient(cfg.ConnectionString, cfg.TableName);
         _table.CreateIfNotExists();
     }
 
-    public Task<TableResult> Upsert(FibonacciResultEntity entity, CancellationToken ct)
+    public async Task Upsert(FibonacciResultEntity entity, CancellationToken ct)
     {
-        return _table.ExecuteAsync(TableOperation.InsertOrMerge(entity), ct);
+        await _table.UpsertEntityAsync(entity, cancellationToken: ct);
     }
 
     public async Task Delete(int n, CancellationToken ct)
     {
-        var operation = TableOperation.Delete(new TableEntity(FibonacciResultEntity.DefaultPartition, n.ToString()) { ETag = "*" });
-        try
-        {
-            await _table.ExecuteAsync(operation, ct);
-        }
-        catch (StorageException e) when (e.Message == "Not Found")
-        {
-        }
+        await _table.DeleteEntityAsync(FibonacciResultEntity.DefaultPartition, n.ToString(), cancellationToken: ct);
     }
 
-    public async Task<int?> GetEntity(int n, CancellationToken ct)
+    public async Task<int?> Get(int n, CancellationToken ct)
     {
-        var operation = TableOperation.Retrieve<FibonacciResultEntity>(FibonacciResultEntity.DefaultPartition, n.ToString());
-        var response = await _table.ExecuteAsync(operation, ct);
-        if (response.Result is FibonacciResultEntity r)
-        {
-            return r.Result;
-        }
-
-        return null;
+        var entity = await _table.GetEntityAsync<FibonacciResultEntity>(FibonacciResultEntity.DefaultPartition, n.ToString(), cancellationToken: ct);
+        return entity?.Value.Result;
     }
 }

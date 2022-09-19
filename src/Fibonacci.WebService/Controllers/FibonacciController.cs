@@ -59,7 +59,7 @@ public class FibonacciController : ControllerBase
     public async Task<IActionResult> Get(int n, CancellationToken ct)
     {
         _logger.LogInformation("Getting result for {n}", n);
-        var fib = await _tableStorage.GetEntity(n, ct);
+        var fib = await _tableStorage.Get(n, ct);
 
         if (fib.HasValue)
         {
