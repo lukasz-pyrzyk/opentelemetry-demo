@@ -7,21 +7,19 @@ using Fibonacci.Shared.ServiceBus;
 using Fibonacci.Shared.TableStorage;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using OpenTelemetry.Trace;
 
 namespace Fibonacci.Worker;
 
 class MessageHandler : BackgroundService
 {
+    private static ActivitySource ActivitySource { get; } = new(Settings.CalculationActivityName);
     private readonly FibonacciTableStorage _repository;
     private readonly ServiceBusProcessor _processor;
     private readonly ILogger<MessageHandler> _logger;
-    private readonly Tracer _tracer;
 
-    public MessageHandler(ServiceBusClient client, FibonacciQueueCfg cfg, FibonacciTableStorage repository, ILogger<MessageHandler> logger, TracerProvider tracerProvider)
+    public MessageHandler(ServiceBusClient client, FibonacciQueueCfg cfg, FibonacciTableStorage repository, ILogger<MessageHandler> logger)
     {
         _logger = logger;
-        _tracer = tracerProvider.GetTracer(Settings.CalculationActivityName);
         _repository = repository;
         _processor = client.CreateProcessor(cfg.EntityPath);
         _processor.ProcessMessageAsync += ProcessorOnProcessMessageAsync;
@@ -56,7 +54,9 @@ class MessageHandler : BackgroundService
 
     private int Fibonacci(int n)
     {
-        using var span = _tracer.StartActiveSpan("Calculating fibonacci");
+        using var activity = ActivitySource.StartActivity("Calculating fibonacci");
+
+        Thread.Sleep(n * 100); // yea, I know
 
         int a = 0; int b = 1;
         for (var i = 0; i < n; i++)
@@ -65,8 +65,10 @@ class MessageHandler : BackgroundService
             a = b;
             b = temp + b;
         }
-        span.SetAttribute("Value", n);
-        span.SetAttribute("Result", a);
+
+        activity?.SetTag("Value", n);
+        activity?.SetTag("Result", a);
+
         return a;
     }
 
