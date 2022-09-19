@@ -1,0 +1,10 @@
+###
+@n = 41
+
+GET https://localhost:5000/{{n}}
+ 
+###
+POST https://localhost:5000/{{n}}
+
+###
+DELETE https://localhost:5000/{{n}}

@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Directory.Build.props = Directory.Build.props
 		Directory.Build.targets = Directory.Build.targets
 		readme.md = readme.md
+		requests.http = requests.http
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fibonacci.WebService", "src\Fibonacci.WebService\Fibonacci.WebService.csproj", "{BB0961D4-0ADF-4277-8A44-C5C1556B489A}"
