@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using Azure;
 using Azure.Data.Tables;
 
 namespace Fibonacci.Shared.TableStorage;
@@ -26,7 +27,14 @@ public class FibonacciTableStorage
 
     public async Task<int?> Get(int n, CancellationToken ct)
     {
-        var entity = await _table.GetEntityAsync<FibonacciResultEntity>(FibonacciResultEntity.DefaultPartition, n.ToString(), cancellationToken: ct);
-        return entity?.Value.Result;
+        try
+        {
+            var response = await _table.GetEntityAsync<FibonacciResultEntity>(FibonacciResultEntity.DefaultPartition, n.ToString(), cancellationToken: ct);
+            return response.Value.Result;
+        }
+        catch (RequestFailedException e) when (e.ErrorCode == "ResourceNotFound")
+        {
+            return null;
+        }
     }
 }

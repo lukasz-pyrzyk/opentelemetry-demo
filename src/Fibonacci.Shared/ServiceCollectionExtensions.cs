@@ -17,17 +17,9 @@ public static class ServiceCollectionExtensions
         Activity.DefaultIdFormat = ActivityIdFormat.W3C;
 
         AppContext.SetSwitch("Azure.Experimental.EnableActivitySource", true);
-        //using ActivityListener listener = new ActivityListener()
-        //{
-        //    ShouldListenTo = a => a.Name.StartsWith("Azure"),
-        //    Sample = (ref ActivityCreationOptions<ActivityContext> _) => ActivitySamplingResult.AllData,
-        //    SampleUsingParentId = (ref ActivityCreationOptions<string> _) => ActivitySamplingResult.AllData,
-        //    ActivityStarted = activity => Console.WriteLine("Start: " + activity.DisplayName),
-        //    ActivityStopped = activity => Console.WriteLine("Stop: " + activity.DisplayName)
-        //};
-        //ActivitySource.AddActivityListener(listener);
 
-        services.AddOpenTelemetryTracing(builder => builder
+        services
+            .AddOpenTelemetryTracing(builder => builder
             .AddSource("Azure.*")
             .AddSource(Settings.CalculationActivityName)
             .AddAspNetCoreInstrumentation()
