@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Fibonacci.WebService;
+namespace Fibonacci.Shared.HistoryDatabase;
 
 public class HistoryDbContext : DbContext
 {

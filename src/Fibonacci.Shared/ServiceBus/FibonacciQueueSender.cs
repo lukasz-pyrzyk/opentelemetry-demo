@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Azure.Messaging.ServiceBus;
-using Fibonacci.Shared.ServiceBus;
 
-namespace Fibonacci.WebService
+namespace Fibonacci.Shared.ServiceBus
 {
     public class FibonacciQueueSender : IAsyncDisposable
     {

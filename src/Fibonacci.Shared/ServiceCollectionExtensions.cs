@@ -2,7 +2,6 @@
 using Azure.Messaging.ServiceBus;
 using Fibonacci.Shared.ServiceBus;
 using Fibonacci.Shared.TableStorage;
-using Fibonacci.WebService;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

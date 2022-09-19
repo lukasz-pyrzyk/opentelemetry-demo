@@ -3,6 +3,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Azure.Messaging.ServiceBus;
+using Fibonacci.Shared.HistoryDatabase;
+using Fibonacci.Shared.ServiceBus;
 using Fibonacci.Shared.TableStorage;
 using Microsoft.Extensions.Logging;
 

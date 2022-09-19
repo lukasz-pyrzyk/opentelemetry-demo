@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Fibonacci.WebService;
+namespace Fibonacci.Shared.HistoryDatabase;
 
 public class HistoryEntry
 {

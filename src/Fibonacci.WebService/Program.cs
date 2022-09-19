@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Fibonacci.Shared.HistoryDatabase;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
