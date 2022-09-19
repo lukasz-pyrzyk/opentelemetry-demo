@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using Fibonacci.WebServiceClient;
 using FluentAssertions;
 using Xunit;
 

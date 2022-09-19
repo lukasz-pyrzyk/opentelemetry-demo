@@ -1,4 +1,4 @@
-### PoC of the distributed request telemetry in Nephele
+### PoC of the distributed request telemetry
 
 ## Resources
 

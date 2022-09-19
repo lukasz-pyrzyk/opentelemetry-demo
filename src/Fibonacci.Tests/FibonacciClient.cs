@@ -3,13 +3,13 @@ using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Fibonacci.WebServiceClient;
+namespace Fibonacci.Tests;
 
 public class FibonacciClient
 {
     private readonly HttpClient _client = new HttpClient
     {
-        BaseAddress = new Uri("https://localhost:5003")
+        BaseAddress = new Uri("https://localhost:5001")
     };
 
     public async Task<int> Calculate(int n)

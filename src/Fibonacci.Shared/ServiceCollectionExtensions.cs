@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Sonova.Nephele.OpenTelemetry;
+namespace Fibonacci.Shared;
 
 public static class ServiceCollectionExtensions
 {
