@@ -57,7 +57,7 @@ public class FibonacciController : ControllerBase
         }
             
         _logger.LogInformation("Result for {n} not found", n);
-        return NotFound();
+        return NotFound($"No result for n: {n}");
     }
 
     [HttpDelete("/{n?}")]
