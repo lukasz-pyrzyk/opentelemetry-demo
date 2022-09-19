@@ -1,5 +1,17 @@
 ### PoC of the distributed request telemetry
 
+## Dependencies
+
+### Zipkin
+
+Project uses Zipking for presenting OpenTelemetry functionalities. You can use Docker to run it locally:
+
+```bash
+docker run -d -p 9411:9411 openzipkin/zipkin
+```
+
+Started instance will be available at http://localhost:9411/zipkin/
+
 ## Resources
 
 1. https://opentelemetry.io/
