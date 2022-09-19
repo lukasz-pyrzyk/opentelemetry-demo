@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Azure.Messaging.ServiceBus;
@@ -30,13 +29,21 @@ class MessageHandler : BackgroundService
         while (!ct.IsCancellationRequested)
         {
             var msg = await _processor.ReceiveMessageAsync(cancellationToken: ct);
-            await Handle(msg, ct);
+            if (msg is not null)
+            {
+                await Handle(msg, ct);
+            }
         }
     }
 
     private async Task Handle(ServiceBusReceivedMessage msg, CancellationToken ct)
     {
-        var n = Convert.ToInt32(msg.Body.ToString());
+        var bodyAsString = msg.Body.ToString();
+        if (!int.TryParse(bodyAsString, out var n))
+        {
+            _logger.LogWarning("Received invalid number {bodyAsString}", bodyAsString);
+        }
+
         var fib = Fibonacci(n);
         _logger.LogInformation("Calculated fib value {fib} for n {n}.", fib, n);
 
@@ -52,7 +59,7 @@ class MessageHandler : BackgroundService
         var client = _factory.CreateClient();
         using var _ = await client.GetAsync("https://google.com");
     }
-    
+
     private static int Fibonacci(int n)
     {
         int a = 0; int b = 1;
