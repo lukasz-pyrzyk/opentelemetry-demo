@@ -1,25 +1,20 @@
-using Microsoft.AspNetCore.Hosting;
+using Fibonacci.Shared;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Serilog;
 
 namespace Fibonacci.Worker;
 
 public class Program
 {
-    public static void Main(string[] args)
-    {
-        CreateHostBuilder(args).Build().Run();
-    }
+    public static void Main(string[] args) => CreateHostBuilder(args).Build().Run();
 
-    public static IHostBuilder CreateHostBuilder(string[] args) =>
-        Host.CreateDefaultBuilder(args)
-            .UseSerilog((context, logging) =>
-            {
-                logging.WriteTo.Seq("http://localhost:5341/");
-                logging.WriteTo.Console();
-            })
-            .ConfigureWebHostDefaults(webBuilder =>
-            {
-                webBuilder.UseStartup<Startup>();
-            });
+    private static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args).ConfigureServices((ctx, services) =>
+    {
+        services.AddOpenTelemetry();
+
+        services.AddTableStorage(ctx.Configuration);
+        services.AddServiceBusClients(ctx.Configuration);
+        services.AddHostedService<MessageHandler>();
+
+    });
 }

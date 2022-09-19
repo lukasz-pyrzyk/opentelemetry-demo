@@ -15,10 +15,6 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddOpenTelemetry();
-        
-        services.AddTableStorage(Configuration);
-        services.AddServiceBusClients(Configuration);
-        services.AddHostedService<MessageHandler>();
+
     } 
 }

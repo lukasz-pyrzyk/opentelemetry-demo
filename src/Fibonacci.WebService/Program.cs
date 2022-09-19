@@ -24,8 +24,7 @@ public class Program
         await context.Database.MigrateAsync();
     }
 
-    public static IHostBuilder CreateHostBuilder(string[] args) =>
-        Host.CreateDefaultBuilder(args)
+    public static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args)
             .UseSerilog((context, logging) =>
             {
                 logging.WriteTo.Seq("http://localhost:5341/");

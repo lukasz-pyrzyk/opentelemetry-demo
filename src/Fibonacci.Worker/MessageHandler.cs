@@ -1,5 +1,4 @@
-﻿using System.Net.Http;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Azure.Messaging.ServiceBus;
 using Fibonacci.Shared.ServiceBus;
@@ -12,15 +11,13 @@ namespace Fibonacci.Worker;
 class MessageHandler : BackgroundService
 {
     private readonly FibonacciTableStorage _repository;
-    private readonly IHttpClientFactory _factory;
     private readonly ServiceBusReceiver _processor;
     private readonly ILogger<MessageHandler> _logger;
 
-    public MessageHandler(ServiceBusClient client, FibonacciQueueCfg cfg, FibonacciTableStorage repository, IHttpClientFactory factory, ILogger<MessageHandler> logger)
+    public MessageHandler(ServiceBusClient client, FibonacciQueueCfg cfg, FibonacciTableStorage repository, ILogger<MessageHandler> logger)
     {
         _logger = logger;
         _repository = repository;
-        _factory = factory;
         _processor = client.CreateReceiver(cfg.EntityPath);
     }
 
