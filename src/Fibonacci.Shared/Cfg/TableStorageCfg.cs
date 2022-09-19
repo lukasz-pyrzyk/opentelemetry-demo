@@ -1,8 +1,7 @@
-﻿namespace Fibonacci.Shared.Cfg
+﻿namespace Fibonacci.Shared.Cfg;
+
+public class TableStorageCfg
 {
-    public class TableStorageCfg
-    {
-        public string ConnectionString { get; set; }
-        public string TableName { get; set; }
-    }
+    public string ConnectionString { get; set; }
+    public string TableName { get; set; }
 }

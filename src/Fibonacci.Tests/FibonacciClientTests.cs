@@ -3,29 +3,28 @@ using Fibonacci.WebServiceClient;
 using FluentAssertions;
 using Xunit;
 
-namespace Fibonacci.Tests
+namespace Fibonacci.Tests;
+
+public class FibonacciClientTests
 {
-    public class FibonacciClientTests
+    [Theory]
+    [InlineData(6, 8)]
+    public async Task GetsFibonacciValue(int value, int expected)
     {
-        [Theory]
-        [InlineData(6, 8)]
-        public async Task GetsFibonacciValue(int value, int expected)
+        // Arrange
+        var client = new FibonacciClient();
+
+        try
         {
-            // Arrange
-            var client = new FibonacciClient();
+            // Act
+            var calculatedValue = await client.Calculate(value);
 
-            try
-            {
-                // Act
-                var calculatedValue = await client.Calculate(value);
-
-                // Assert
-                calculatedValue.Should().Be(expected);
-            }
-            finally
-            {
-                await client.DeleteResult(value);
-            }
+            // Assert
+            calculatedValue.Should().Be(expected);
+        }
+        finally
+        {
+            await client.DeleteResult(value);
         }
     }
 }

@@ -3,83 +3,82 @@ using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Fibonacci.WebServiceClient
+namespace Fibonacci.WebServiceClient;
+
+public class FibonacciClient
 {
-    public class FibonacciClient
+    private readonly HttpClient _client = new HttpClient
     {
-        private readonly HttpClient _client = new HttpClient
-        {
-            BaseAddress = new Uri("https://localhost:5003")
-        };
+        BaseAddress = new Uri("https://localhost:5003")
+    };
 
-        public async Task<int> Calculate(int n)
+    public async Task<int> Calculate(int n)
+    {
+        var location = await PostRequest(n);
+        return await ReadResult(location);
+    }
+
+    private async Task<Uri> PostRequest(int n)
+    {
+        var getActivity = new Activity("post call from client")
+            .AddBaggage("sender", "client")
+            .Start();
+
+        using var postRequest = new HttpRequestMessage(HttpMethod.Post, $"/{n}");
+        Uri location = null;
+        try
         {
-            var location = await PostRequest(n);
-            return await ReadResult(location);
+            using var postResponse = await _client.SendAsync(postRequest);
+            postResponse.EnsureSuccessStatusCode();
+            location = postResponse.Headers.Location;
+        }
+        finally
+        {
+            getActivity.Stop();
         }
 
-        private async Task<Uri> PostRequest(int n)
+        return location;
+    }
+
+    private async Task<int> ReadResult(Uri location)
+    {
+        await Task.Delay(TimeSpan.FromSeconds(5)); // wait for backend
+
+        var postActivity = new Activity("post call from client")
+            .AddBaggage("sender", "client")
+            .Start();
+
+        using var getRequest = new HttpRequestMessage(HttpMethod.Get, location);
+        try
         {
-            var getActivity = new Activity("post call from client")
-                .AddBaggage("sender", "client")
-                .Start();
+            using var getResponse = await _client.SendAsync(getRequest);
+            getResponse.EnsureSuccessStatusCode();
 
-            using var postRequest = new HttpRequestMessage(HttpMethod.Post, $"/{n}");
-            Uri location = null;
-            try
-            {
-                using var postResponse = await _client.SendAsync(postRequest);
-                postResponse.EnsureSuccessStatusCode();
-                location = postResponse.Headers.Location;
-            }
-            finally
-            {
-                getActivity.Stop();
-            }
-
-            return location;
+            var calculatedValue = await getResponse.Content.ReadAsStringAsync();
+            return int.Parse(calculatedValue);
         }
-
-        private async Task<int> ReadResult(Uri location)
+        finally
         {
-            await Task.Delay(TimeSpan.FromSeconds(5)); // wait for backend
-
-            var postActivity = new Activity("post call from client")
-                .AddBaggage("sender", "client")
-                .Start();
-
-            using var getRequest = new HttpRequestMessage(HttpMethod.Get, location);
-            try
-            {
-                using var getResponse = await _client.SendAsync(getRequest);
-                getResponse.EnsureSuccessStatusCode();
-
-                var calculatedValue = await getResponse.Content.ReadAsStringAsync();
-                return int.Parse(calculatedValue);
-            }
-            finally
-            {
-                postActivity.Stop();
-            }
+            postActivity.Stop();
         }
+    }
 
 
-        public async Task DeleteResult(int n)
+    public async Task DeleteResult(int n)
+    {
+        var activity = new Activity("call from client")
+            .AddBaggage("sender", "client")
+            .Start();
+
+        try
         {
-            var activity = new Activity("call from client")
-                .AddBaggage("sender", "client")
-                .Start();
-
-            try
-            {
-                using var request = new HttpRequestMessage(HttpMethod.Delete, $"/{n}");
-                using var response = await _client.SendAsync(request);
-                response.EnsureSuccessStatusCode();
-            }
-            finally
-            {
-                activity.Stop();
-            }
+            using var request = new HttpRequestMessage(HttpMethod.Delete, $"/{n}");
+            using var response = await _client.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+        }
+        finally
+        {
+            activity.Stop();
         }
     }
 }

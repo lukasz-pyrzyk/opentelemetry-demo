@@ -9,51 +9,50 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Sonova.Nephele.OpenTelemetry;
 
-namespace Fibonacci.WebService
+namespace Fibonacci.WebService;
+
+public class Startup
 {
-    public class Startup
+    public Startup(IConfiguration configuration)
     {
-        public Startup(IConfiguration configuration)
+        Configuration = configuration;
+    }
+
+    public IConfiguration Configuration { get; set; }
+
+
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.AddOpenTelemetry();
+
+        var tableCfg = new TableStorageCfg();
+        Configuration.GetSection("TableStorage").Bind(tableCfg);
+        services.AddSingleton(tableCfg);
+        services.AddSingleton<Repository>();
+
+        var cfg = new QueueCfg();
+        Configuration.GetSection("Queue").Bind(cfg);
+        services.AddSingleton(cfg);
+        services.AddSingleton(new QueueClient(cfg.ConnectionString, cfg.EntityPath));
+
+        services.AddDbContextPool<HistoryDbContext>(builder =>
         {
-            Configuration = configuration;
+            var cs = Configuration.GetConnectionString("Db");
+            builder.UseSqlServer(cs);
+        });
+
+        services.AddControllers();
+        services.AddMvc();
+    }
+
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        if (env.IsDevelopment())
+        {
+            app.UseDeveloperExceptionPage();
         }
 
-        public IConfiguration Configuration { get; set; }
-
-
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddOpenTelemetry();
-
-            var tableCfg = new TableStorageCfg();
-            Configuration.GetSection("TableStorage").Bind(tableCfg);
-            services.AddSingleton(tableCfg);
-            services.AddSingleton<Repository>();
-
-            var cfg = new QueueCfg();
-            Configuration.GetSection("Queue").Bind(cfg);
-            services.AddSingleton(cfg);
-            services.AddSingleton(new QueueClient(cfg.ConnectionString, cfg.EntityPath));
-
-            services.AddDbContextPool<HistoryDbContext>(builder =>
-            {
-                var cs = Configuration.GetConnectionString("Db");
-                builder.UseSqlServer(cs);
-            });
-
-            services.AddControllers();
-            services.AddMvc();
-        }
-
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
-            app.UseRouting();
-            app.UseEndpoints(endpoints => { endpoints.MapDefaultControllerRoute(); });
-        }
+        app.UseRouting();
+        app.UseEndpoints(endpoints => { endpoints.MapDefaultControllerRoute(); });
     }
 }
