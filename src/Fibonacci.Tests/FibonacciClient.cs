@@ -25,7 +25,7 @@ public class FibonacciClient
             .Start();
 
         using var postRequest = new HttpRequestMessage(HttpMethod.Post, $"/{n}");
-        Uri location = null;
+        Uri location;
         try
         {
             using var postResponse = await _client.SendAsync(postRequest);

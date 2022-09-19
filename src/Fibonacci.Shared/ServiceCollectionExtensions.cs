@@ -16,9 +16,15 @@ public static class ServiceCollectionExtensions
     {
         Activity.DefaultIdFormat = ActivityIdFormat.W3C;
 
-
         services.AddOpenTelemetryTracing(builder => builder
+            .AddSource("Azure.*")
+            .AddSource("CalculatorActivity")
             .AddAspNetCoreInstrumentation()
+            .AddEntityFrameworkCoreInstrumentation(o =>
+            {
+                o.SetDbStatementForText = true;
+                o.SetDbStatementForStoredProcedure = true;
+            })
             .AddHttpClientInstrumentation()
             .SetResourceBuilder(ResourceBuilder.CreateDefault()
                 .AddService(serviceName, "Fibonacci")

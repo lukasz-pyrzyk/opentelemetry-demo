@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 using Azure.Messaging.ServiceBus;
 using Fibonacci.Shared.ServiceBus;
@@ -10,6 +11,8 @@ namespace Fibonacci.Worker;
 
 class MessageHandler : BackgroundService
 {
+    private static readonly ActivitySource Activity = new("CalculatorActivity");
+
     private readonly FibonacciTableStorage _repository;
     private readonly ServiceBusReceiver _processor;
     private readonly ILogger<MessageHandler> _logger;
@@ -47,8 +50,13 @@ class MessageHandler : BackgroundService
         await _repository.Upsert(new FibonacciResultEntity(n, fib), ct);
         _logger.LogInformation("Saved result for n {n}", n);
     }
+
     private static int Fibonacci(int n)
     {
+        using var activity = Activity.StartActivity("Calculating");
+        activity?.AddTag("Name", n.ToString());
+        activity?.AddBaggage("SampleContext", n.ToString());
+
         int a = 0; int b = 1;
         for (var i = 0; i < n; i++)
         {
