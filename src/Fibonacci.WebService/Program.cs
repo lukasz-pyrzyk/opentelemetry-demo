@@ -28,7 +28,6 @@ public class Program
     public static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args)
             .UseSerilog((context, logging) =>
             {
-                logging.WriteTo.Seq("http://localhost:5341/");
                 logging.WriteTo.Console();
             })
             .ConfigureWebHostDefaults(webBuilder =>

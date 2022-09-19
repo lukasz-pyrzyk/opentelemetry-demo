@@ -12,7 +12,6 @@
     <PackageReference Update="OpenTelemetry.Exporter.Zipkin" Version="1.4.0-beta.3.8 " />
     <PackageReference Update="Serilog.Extensions.Hosting" Version="5.0.1" />
     <PackageReference Update="Serilog.Sinks.Console" Version="4.1.0" />
-    <PackageReference Update="Serilog.Sinks.Seq" Version="5.2.0" />
     <PackageReference Update="xunit" Version="2.4.2" />
     <PackageReference Update="xunit.runner.visualstudio" Version="2.4.5" />
   </ItemGroup>
