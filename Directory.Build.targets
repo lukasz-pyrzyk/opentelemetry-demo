@@ -11,7 +11,6 @@
     <PackageReference Update="Microsoft.NET.Test.Sdk" Version="17.3.1" />
     <PackageReference Update="OpenTelemetry" Version="1.4.0-alpha.2" />
     <PackageReference Update="OpenTelemetry.Contrib.Instrumentation.EntityFrameworkCore" Version="1.0.0-beta2" />
-    <PackageReference Update="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.4.0-alpha.2" />
     <PackageReference Update="OpenTelemetry.Exporter.Zipkin" Version="1.4.0-alpha.2" />
     <PackageReference Update="OpenTelemetry.Extensions.Hosting" Version="1.0.0-rc9.6" />
     <PackageReference Update="OpenTelemetry.Instrumentation.AspNetCore" Version="1.0.0-rc9.6" />
