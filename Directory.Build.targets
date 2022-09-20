@@ -17,7 +17,5 @@
     <PackageReference Update="OpenTelemetry.Instrumentation.Http" Version="1.0.0-rc9.6" />
     <PackageReference Update="Serilog.Extensions.Hosting" Version="5.0.1" />
     <PackageReference Update="Serilog.Sinks.Console" Version="4.1.0" />
-    <PackageReference Update="xunit" Version="2.4.2" />
-    <PackageReference Update="xunit.runner.visualstudio" Version="2.4.5" />
   </ItemGroup>
 </Project>
