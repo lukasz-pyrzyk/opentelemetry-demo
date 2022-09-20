@@ -22,8 +22,14 @@ class MessageHandler : BackgroundService
         _logger = logger;
         _repository = repository;
         _processor = client.CreateProcessor(cfg.EntityPath);
-        _processor.ProcessMessageAsync += ProcessorOnProcessMessageAsync;
         _processor.ProcessErrorAsync += ProcessorOnProcessErrorAsync;
+        _processor.ProcessMessageAsync += ProcessorOnProcessMessageAsync;
+    }
+
+    private Task ProcessorOnProcessErrorAsync(ProcessErrorEventArgs arg)
+    {
+        _logger.LogError(arg.Exception, "Received exception when reading servicebus message");
+        return Task.CompletedTask;
     }
 
     private async Task ProcessorOnProcessMessageAsync(ProcessMessageEventArgs arg)
@@ -39,17 +45,6 @@ class MessageHandler : BackgroundService
 
         await _repository.Upsert(new FibonacciResultEntity(n, fib), arg.CancellationToken);
         _logger.LogInformation("Saved result for n {n}", n);
-    }
-
-    private Task ProcessorOnProcessErrorAsync(ProcessErrorEventArgs arg)
-    {
-        _logger.LogError(arg.Exception, "Received exception when reading servicebus message");
-        return Task.CompletedTask;
-    }
-
-    protected override async Task ExecuteAsync(CancellationToken ct)
-    {
-        await _processor.StartProcessingAsync(ct);
     }
 
     private int Fibonacci(int n)
@@ -70,6 +65,11 @@ class MessageHandler : BackgroundService
         activity?.SetTag("Result", a);
 
         return a;
+    }
+
+    protected override async Task ExecuteAsync(CancellationToken ct)
+    {
+        await _processor.StartProcessingAsync(ct);
     }
 
     public override async Task StopAsync(CancellationToken ct)
