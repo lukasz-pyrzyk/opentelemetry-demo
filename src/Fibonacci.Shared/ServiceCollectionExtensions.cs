@@ -20,19 +20,20 @@ public static class ServiceCollectionExtensions
 
         services
             .AddOpenTelemetryTracing(builder => builder
-            .AddSource("Azure.*")
-            .AddSource(Settings.CalculationActivityName)
-            .AddAspNetCoreInstrumentation()
-            .AddEntityFrameworkCoreInstrumentation(o =>
-            {
-                o.SetDbStatementForText = true;
-                o.SetDbStatementForStoredProcedure = true;
-            })
-            .AddHttpClientInstrumentation()
-            .SetResourceBuilder(ResourceBuilder.CreateDefault()
-                .AddService(serviceName, "Fibonacci")
-                .AddTelemetrySdk())
-            .AddZipkinExporter(x => x.Endpoint = new Uri("http://localhost:9411/api/v2/spans")));
+                .AddSource("Azure.*")
+                .AddSource(Settings.CalculationActivityName)
+                .AddAspNetCoreInstrumentation()
+                .AddEntityFrameworkCoreInstrumentation(o =>
+                {
+                    o.SetDbStatementForText = true;
+                    o.SetDbStatementForStoredProcedure = true;
+                })
+                .AddHttpClientInstrumentation()
+                .SetResourceBuilder(ResourceBuilder.CreateDefault()
+                    .AddService(serviceName, "Fibonacci")
+                    .AddTelemetrySdk())
+                .AddZipkinExporter(x => x.Endpoint = new Uri("http://localhost:9411/api/v2/spans"))
+            );
     }
 
     public static void AddServiceBusClients(this IServiceCollection services, IConfiguration configuration)
