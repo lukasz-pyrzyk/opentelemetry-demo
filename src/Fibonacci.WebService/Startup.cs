@@ -29,7 +29,7 @@ public class Startup
         services.AddDbContextPool<HistoryDbContext>(builder =>
         {
             var cs = Configuration.GetConnectionString("Db");
-            builder.UseSqlServer(cs);
+            builder.UseSqlServer(cs, options => options.EnableRetryOnFailure());
         });
 
         services.AddControllers();
