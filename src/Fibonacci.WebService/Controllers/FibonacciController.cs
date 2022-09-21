@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -34,7 +35,7 @@ public class FibonacciController : ControllerBase
     }
 
     [HttpPost("/{n?}")]
-    public async Task<IActionResult> Calculate(int? n)
+    public async Task<IActionResult> Calculate([Range(0, int.MaxValue)]int? n)
     {
         if (!n.HasValue) return BadRequest();
 
@@ -56,7 +57,7 @@ public class FibonacciController : ControllerBase
     }
 
     [HttpGet("/{n}")]
-    public async Task<IActionResult> Get(int n, CancellationToken ct)
+    public async Task<IActionResult> Get([Range(0, int.MaxValue)] int n, CancellationToken ct)
     {
         _logger.LogInformation("Getting result for {n}", n);
         var fib = await _tableStorage.Get(n, ct);
@@ -72,7 +73,7 @@ public class FibonacciController : ControllerBase
     }
 
     [HttpDelete("/{n?}")]
-    public async Task<IActionResult> Delete(int? n, CancellationToken ct)
+    public async Task<IActionResult> Delete([Range(0, int.MaxValue)] int? n, CancellationToken ct)
     {
         if (!n.HasValue) return BadRequest();
 
