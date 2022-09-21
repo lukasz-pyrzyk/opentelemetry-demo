@@ -33,6 +33,7 @@ public static class ServiceCollectionExtensions
                     .AddService(serviceName, "Fibonacci")
                     .AddTelemetrySdk())
                 .AddZipkinExporter(x => x.Endpoint = new Uri("http://localhost:9411/api/v2/spans"))
+               //.AddJaegerExporter(x => x.Endpoint = new Uri("http://localhost:9411/api/v2/spans"))
             );
     }
 
