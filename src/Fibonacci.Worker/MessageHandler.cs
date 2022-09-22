@@ -38,6 +38,7 @@ class MessageHandler : BackgroundService
         if (!int.TryParse(bodyAsString, out var n))
         {
             _logger.LogWarning("Received invalid number {bodyAsString}", bodyAsString);
+            return;
         }
 
         var fib = Fibonacci(n);
