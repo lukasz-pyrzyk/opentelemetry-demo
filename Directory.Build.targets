@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
   <ItemGroup>
-    <PackageReference Update="Azure.Data.Tables" Version="12.6.1" />
-    <PackageReference Update="Azure.Messaging.ServiceBus" Version="7.11.0-beta.1" />
+    <PackageReference Update="Azure.Data.Tables" Version="12.7.1" />
+    <PackageReference Update="Azure.Messaging.ServiceBus" Version="7.11.1" />
     <PackageReference Update="FluentAssertions" Version="6.7.0" />
-    <PackageReference Update="Microsoft.EntityFrameworkCore" Version="6.0.9" />
-    <PackageReference Update="Microsoft.EntityFrameworkCore.Design" Version="6.0.9" />
-    <PackageReference Update="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.9" />
-    <PackageReference Update="Microsoft.Extensions.Hosting" Version="6.0.1" />
+    <PackageReference Update="Microsoft.EntityFrameworkCore" Version="7.0.0" />
+    <PackageReference Update="Microsoft.EntityFrameworkCore.Design" Version="7.0.0" />
+    <PackageReference Update="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.0" />
+    <PackageReference Update="Microsoft.Extensions.Hosting" Version="7.0.0" />
     <PackageReference Update="Microsoft.NET.Test.Sdk" Version="17.3.1" />
-    <PackageReference Update="OpenTelemetry" Version="1.4.0-alpha.2" />
+    <PackageReference Update="OpenTelemetry" Version="1.4.0-beta.3" />
     <PackageReference Update="OpenTelemetry.Contrib.Instrumentation.EntityFrameworkCore" Version="1.0.0-beta2" />
-    <PackageReference Update="OpenTelemetry.Exporter.Zipkin" Version="1.4.0-alpha.2" />
-    <PackageReference Update="OpenTelemetry.Exporter.Jaeger" Version="1.4.0-alpha.2" />
-    <PackageReference Update="OpenTelemetry.Extensions.Hosting" Version="1.0.0-rc9.6" />
-    <PackageReference Update="OpenTelemetry.Instrumentation.AspNetCore" Version="1.0.0-rc9.6" />
-    <PackageReference Update="OpenTelemetry.Instrumentation.Http" Version="1.0.0-rc9.6" />
+    <PackageReference Update="OpenTelemetry.Exporter.Zipkin" Version="1.4.0-beta.3" />
+    <PackageReference Update="OpenTelemetry.Exporter.Jaeger" Version="1.4.0-beta.3" />
+    <PackageReference Update="OpenTelemetry.Extensions.Hosting" Version="1.0.0-rc9.9" />
+    <PackageReference Update="OpenTelemetry.Instrumentation.AspNetCore" Version="1.0.0-rc9.9" />
+    <PackageReference Update="OpenTelemetry.Instrumentation.Http" Version="1.0.0-rc9.9" />
     <PackageReference Update="Serilog.Extensions.Hosting" Version="5.0.1" />
     <PackageReference Update="Serilog.Sinks.Console" Version="4.1.0" />
   </ItemGroup>
